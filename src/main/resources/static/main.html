@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>billboard大屏数据可视化</title>
+    <style>
+        /* CSS样式 */
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #header {
+            width: 100%;
+            height: 8%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #content {
+            width: 100%;
+            height: 92%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+        }
+        .chart-container {
+            width: 49%;
+            height: 48%;
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+        .chart-container:not(:last-child) {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body style="background-color: bisque">
+<div id="header">
+    <h2>billboard hot100,global200 data visual</h2>
+    <div class="show-time"></div>
+    <script>
+        var t = null;
+        t = setTimeout(time, 1000); //开始运行
+        function time() {
+            clearTimeout(t); //清除定时器
+            dt = new Date();
+            var y = dt.getFullYear();
+            var mt = dt.getMonth() + 1;
+            var day = dt.getDate();
+            var h = dt.getHours(); //获取时
+            var m = dt.getMinutes(); //获取分
+            var s = dt.getSeconds(); //获取秒
+            document.querySelector(".show-time").innerHTML =
+                "当前时间：" +
+                y +
+                "年" +
+                mt +
+                "月" +
+                day +
+                "日" +
+                h +
+                "时" +
+                m +
+                "分" +
+                s +
+                "秒";
+            t = setTimeout(time, 1000); //设定定时器，循环运行
+        }
+    </script>
+</div>
+
+<div id="content">
+    <div class="chart-container" id="chart1">
+        <iframe src="1.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+    <div class="chart-container" id="chart2">
+        <iframe src="2.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+    <div class="chart-container" id="chart3">
+        <iframe src="3.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+    <div class="chart-container" id="chart4">
+        <iframe src="big4.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.0.0/dist/d3.min.js"></script>
+<script>
+</script>
+</body>
+</html>

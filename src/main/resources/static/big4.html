@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>global 200 song title statistics</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #chart {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+        }
+    </style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="text/javascript">
+    var chart = echarts.init(document.getElementById('chart'));
+
+    // 监听窗口大小变化事件
+    window.addEventListener('resize', function() {
+        chart.resize(); // 调整图表大小
+    });
+
+    // 使用Ajax异步获取数据
+    $.ajax({
+        url: '/chart-data4',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var option = {
+                title: {
+                    text: 'global200 song title statisitcs',
+                    textStyle: {
+                        textAlign: 'center'
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c} ({d}%)'
+                },
+                series: [{
+                    name: 'song title',
+                    type: 'pie',
+                    radius: '50%',
+                    data: data.values.map(function(value, index) {
+                        return {
+                            name: data.labels[index],
+                            value: value
+                        };
+                    })
+                }]
+            };
+            chart.setOption(option);
+        }
+    });
+</script>
+</body>
+</html>

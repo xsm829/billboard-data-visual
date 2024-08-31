@@ -1,0 +1,4 @@
+resources:
+  web:
+    resources:
+      static-locations: classpath:/templates/, classpath:/static/

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>hot100 song title statistics</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #chart {
+            width: 100%;
+            height: 100%;
+            min-height: 300px; /* 设置最小高度，防止内容过小时显示异常 */
+        }
+    </style>
+</head>
+<body>
+<div id="chart"></div>
+<script type="text/javascript">
+    var chart = echarts.init(document.getElementById('chart'));
+
+    // 监听窗口大小变化事件
+    window.addEventListener('resize', function() {
+        chart.resize(); // 调整图表大小
+    });
+
+    // 使用Ajax异步获取数据
+    $.ajax({
+        url: '/chart-data3',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var option = {
+                title: {
+                    text: 'hot100 song title statistics',
+                    textStyle: {
+                        textAlign: 'center'
+                    }
+                },
+                tooltip: {},
+                angleAxis: {},
+                radiusAxis: {
+                    type: 'category',
+                    data: data.labels
+                },
+                polar: {},
+                series: [{
+                    name: 'song title',
+                    type: 'bar',
+                    data: data.values,
+                    coordinateSystem: 'polar',
+                    itemStyle: {
+                        color: function(params) {
+                            // 设置背景颜色
+                            var colorList = ['#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B', '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD'];
+                            return colorList[params.dataIndex % colorList.length];
+                        }
+                    }
+                }],
+                dataZoom: [{
+                    type: 'slider',
+                    show: true, //flase直接隐藏图形
+                    xAxisIndex: [0],
+                    left: '9%', //滚动条靠左侧的百分比
+                    bottom: -10,
+                    start: 5,//滚动条的起始位置
+                    end: 30 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+                }],
+            };
+            chart.setOption(option);
+        }
+    });
+</script>
+</body>
+</html>

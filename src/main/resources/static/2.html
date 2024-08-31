@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>global200 singer statistics</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #chart-container {
+            width: 100%;
+            height: 100%;
+            min-height: 300px; /* 设置最小高度，防止内容过小时显示异常 */
+        }
+    </style>
+</head>
+<body>
+<div id="chart-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // 使用 Axios 发送 AJAX 请求
+    axios.get('/chart-data2')
+        .then(function (response) {
+            // 处理从后端返回的数据
+            const data = response.data;
+
+            // 提取 X 轴和 Y 轴数据
+            const xData = data.labels;
+            const yData = data.values;
+
+            // 创建图表
+            const chartContainer = document.getElementById('chart-container');
+            const chart = echarts.init(chartContainer);
+
+            // 监听窗口大小变化事件
+            window.addEventListener('resize', function() {
+                chart.resize(); // 调整图表大小
+            });
+
+            const option = {
+                title: {
+                    text: 'global200 singer statistics'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    type: 'line',
+                    data: yData,
+                    areaStyle: {
+                        color: 'rgba(0, 128, 255, 0.3)' // 设置背景颜色
+                    }
+                }],
+                dataZoom: [{
+                    type: 'slider',
+                    show: true, //flase直接隐藏图形
+                    xAxisIndex: [0],
+                    left: '9%', //滚动条靠左侧的百分比
+                    bottom: -10,
+                    start: 5,//滚动条的起始位置
+                    end: 30 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+                }],
+            };
+
+            // 渲染图表
+            chart.setOption(option);
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+</script>
+</body>
+</html>
